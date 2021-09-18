@@ -11,6 +11,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -44,10 +45,11 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
-public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
+public class FlagDef_DenyPvP extends PlayerMovementFlagDefinition {
 
-    public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin) {
+    public FlagDef_DenyPvP(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
@@ -179,6 +181,10 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         event.setCancelled(eventWrapper.isCancelled());
     }
 
+    private void log(String log) {
+        Bukkit.getLogger().log(Level.INFO, log);
+    }
+
     private void handleEntityDamageEvent(EntityDamageByEntityEvent event, boolean sendErrorMessagesToPlayers) {
         //if the pet is not tamed, we don't care
         if (event.getEntityType() != EntityType.PLAYER) {
@@ -193,7 +199,6 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         //if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.get(damager.getWorld());
-        if (!settings.pvpRequiresClaimFlag) return;
 
         Projectile projectile = null;
         if (damager instanceof Projectile) {
@@ -208,7 +213,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         //if in a flagged-for-pvp area, allow
         Flag flag = this.getFlagInstanceAtLocation(damager.getLocation(), null);
         Flag flag2 = this.getFlagInstanceAtLocation(event.getEntity().getLocation(), null);
-        if (flag != null && flag2 != null) return;
+        if (flag == null && flag2 == null) return;
 
         //if damaged entity is not a player, ignore, this is a PVP flag
         if (event.getEntityType() != EntityType.PLAYER) return;
@@ -287,17 +292,17 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
     @Override
     public String getName() {
-        return "AllowPvP";
+        return "DenyPvP";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.AddEnablePvP);
+        return new MessageSpecifier(Messages.RemoveEnabledPvP);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.RemoveEnabledPvP);
+        return new MessageSpecifier(Messages.AddEnablePvP);
     }
 
     @Override

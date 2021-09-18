@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
-import me.ryanhamshire.GPFlags.flags.FlagDef_AllowPvP;
+import me.ryanhamshire.GPFlags.flags.FlagDef_DenyPvP;
 import me.ryanhamshire.GPFlags.flags.FlagDef_ChangeBiome;
 import me.ryanhamshire.GPFlags.flags.FlagDef_CommandBlackList;
 import me.ryanhamshire.GPFlags.flags.FlagDef_CommandWhiteList;
@@ -167,7 +167,7 @@ public class GPFlagsConfig {
             plugin.registeredFlagDefinitions = true;
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsters(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_AllowPvP(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_DenyPvP(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand(this.flagManager, plugin));

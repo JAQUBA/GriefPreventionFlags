@@ -119,11 +119,7 @@ class SetClaimFlagCmd extends BaseCmd {
                 Util.sendMessage(player, TextMode.Err, Messages.UpdateGPForSubdivisionFlags);
                 return true;
             }
-            boolean isActive = true;
-            if(params.length == 1 && params[0].equalsIgnoreCase("false")) {
-                isActive = false;
-            }
-            SetFlagResult result = PLUGIN.getFlagManager().setFlag(claimID.toString(), def, isActive, params);
+            SetFlagResult result = PLUGIN.getFlagManager().setFlag(claimID.toString(), def, true, params);
             ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
             Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
             if (result.isSuccess()) FLAG_MANAGER.save();
